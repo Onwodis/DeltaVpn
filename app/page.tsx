@@ -299,7 +299,7 @@ export default function VpnSupportDashboard() {
 
   return (
     <main
-      className={`flex flex-col h-screen max-h-screen overflow-hidden font-sans antialiased perspective-[1000px] transition-colors duration-500 ${
+      className={`flex flex-col h-screen max-h-[90vh] md:max-h-screen overflow-hidden font-sans antialiased perspective-[1000px] transition-colors duration-500 ${
         isDark ? 'bg-slate-950 text-slate-100' : 'bg-slate-50 text-slate-900'
       }`}
     >
