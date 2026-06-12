@@ -27,6 +27,11 @@ Currently, this dashboard utilizes `localStorage` to manage conversation history
 
 ### Installation
 
+
+### Live url
+https://deltavpn.netlify.app/
+
+
 1. Clone the repository and install dependencies:
    ```bash
    pnpm install
