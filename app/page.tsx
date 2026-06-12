@@ -299,7 +299,7 @@ export default function VpnSupportDashboard() {
 
   return (
     <main
-      className={`flex flex-col h-screen max-h-screen font-sans antialiased perspective-[1000px] transition-colors duration-500 ${
+      className={`flex flex-col h-screen max-h-screen overflow-hidden font-sans antialiased perspective-[1000px] transition-colors duration-500 ${
         isDark ? 'bg-slate-950 text-slate-100' : 'bg-slate-50 text-slate-900'
       }`}
     >
@@ -339,7 +339,7 @@ export default function VpnSupportDashboard() {
             alt="Delta Logo"
             className="w-28  rounded-lg object-contain"
           />
-          
+
           {/* <div>
             <h1 className="...">DeltaVPN Core</h1>
             <p className="...">Gloc Managed Node</p>
@@ -567,7 +567,7 @@ export default function VpnSupportDashboard() {
               : 'bg-slate-100 border-slate-200 focus-within:border-blue-500 focus-within:bg-white shadow-sm'
           }`}
         >
-          <input
+          {/* <input
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Type your connection telemetry query..."
@@ -576,6 +576,20 @@ export default function VpnSupportDashboard() {
                 ? 'text-slate-100 placeholder-slate-500'
                 : 'text-slate-800 placeholder-slate-400'
             }`}
+            disabled={isLoading}
+          /> */}
+          <textarea // 1. Use textarea instead of input
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                handleSubmit(e as any);
+              }
+            }}
+            placeholder="Type your connection telemetry query..."
+            className="flex-1 bg-transparent border-0 outline-none text-xs px-3 py-2 max-h-32 min-h-[40px] resize-none" // Added resize-none
+            rows={1}
             disabled={isLoading}
           />
           <motion.button
