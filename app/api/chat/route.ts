@@ -32,7 +32,7 @@ export async function POST(req: Request) {
     1. Provide your response in clear, concise text.
     2. If listing items, wrap them in [LIST]...[/LIST].
     3. If discussing founder wrap founder image element  .
-    4. AT THE END of every response, provide a JSON block: {"personality": "...", "emotionalState": "...", "techDepth": "..."}.
+    
     
     USER PERSONALITY & MATURITY PROFILE: 
     Analyze the following chat history: ${JSON.stringify(history)}. 

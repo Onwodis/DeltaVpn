@@ -335,10 +335,11 @@ export default function VpnSupportDashboard() {
         <div className="flex items-center gap-3">
           {/* IMAGE LOGO IN NAVBAR */}
           <img
-            src="/logob.png"
-            alt="Nexus Logo"
+            src={`${isDark ? `/logob.png` : `/logo_ll.png`}`}
+            alt="Delta Logo"
             className="w-28  rounded-lg object-contain"
           />
+          
           {/* <div>
             <h1 className="...">DeltaVPN Core</h1>
             <p className="...">Gloc Managed Node</p>
