@@ -8,6 +8,19 @@ const groq = new OpenAI({
   apiKey: process.env.GROQ_API_KEY,
   baseURL: 'https://api.groq.com/openai/v1',
 });
+
+
+// Use a getter instead of a constant to avoid build-time errors
+const getGroqClient = () => {
+  const apiKey = process.env.GROQ_API_KEY;
+  if (!apiKey) {
+    throw new Error('GROQ_API_KEY is not defined in environment variables');
+  }
+  return new OpenAI({
+    apiKey,
+    baseURL: 'https://api.groq.com/openai/v1',
+  });
+};
 interface ChatMessage {
   role: 'user' | 'assistant' | 'system';
   content: string;
@@ -17,6 +30,8 @@ interface ChatRequestBody {
   prompt: string;
   history: ChatMessage[];
 }
+
+
 
 export async function POST(req: Request) {
   try {
