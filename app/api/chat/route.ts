@@ -35,6 +35,7 @@ interface ChatRequestBody {
 
 export async function POST(req: Request) {
   try {
+    const groq = getGroqClient();
     const body: ChatRequestBody = await req.json();
     const { prompt, history } = body;
     const currentTime = new Date().toISOString();
