@@ -3,11 +3,6 @@ import { NextResponse } from 'next/server';
 
 export const runtime = 'nodejs';
 
-// Initialize the client pointed at Groq's API
-const groq = new OpenAI({
-  apiKey: process.env.GROQ_API_KEY,
-  baseURL: 'https://api.groq.com/openai/v1',
-});
 
 
 // Use a getter instead of a constant to avoid build-time errors
@@ -35,7 +30,10 @@ interface ChatRequestBody {
 
 export async function POST(req: Request) {
   try {
-    const groq = getGroqClient();
+    const groq = new OpenAI({
+      apiKey: process.env.GROQ_API_KEY,
+      baseURL: 'https://api.groq.com/openai/v1',
+    });
     const body: ChatRequestBody = await req.json();
     const { prompt, history } = body;
     const currentTime = new Date().toISOString();
