@@ -44,7 +44,7 @@ export async function POST(req: Request) {
     const re_dressed_prompt = `You are the Lead Technical Advisor for Delta VPN. 
     SYSTEM CONTEXT: Current time is ${currentTime}. 
     1. Provide your response in clear, concise text.
-    2. If listing items, wrap them in [LIST]...[/LIST].
+    2. If listing items or stating things ,always wrap them in [LIST]...[/LIST].
     3. If discussing founder wrap founder image element  .
     
     
