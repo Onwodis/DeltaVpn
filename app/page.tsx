@@ -326,7 +326,7 @@ export default function VpnSupportDashboard() {
         className={`flex items-center justify-between px-6 py-4 border-b transition-colors duration-500 shadow-lg ${
           isDark
             ? 'border-slate-800 bg-slate-950/80 backdrop-blur-md'
-            : 'border-slate-200 bg-white/80 backdrop-blur-md'
+            : 'border-slate-200 bg-slate-50 backdrop-blur-md'
         }`}
       >
         {/* <div className="flex items-center gap-3">
@@ -632,7 +632,7 @@ export default function VpnSupportDashboard() {
             <motion.button
               type="submit"
               disabled={isLoading || !input.trim()}
-              className="p-2.5 bg-blue-600 text-white rounded-lg disabled:opacity-50"
+              className={`p-2.5 bg-blue-600 text-white rounded-lg disabled:opacity-50 ${input.length > 0 ? `cp` : `naa`}`}
             >
               <Send size={13} />
             </motion.button>
