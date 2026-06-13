@@ -26,61 +26,107 @@ interface ChatMessage {
 }
 
 const LOCAL_STORAGE_KEY = 'Delta_vpn_chat_history';
-const ContentParser = ({ content }: { content: string }) => {
-  // Use [\s\S] to match everything including newlines, avoiding 's' flag issues
-  // const parts = content.split(
-  //   /(\[LIST\][\s\S]*?\[\/LIST\]|\[TABLE\][\s\S]*?\[\/TABLE\]|\[IMAGE\s+.*?\])/g
-  // );
-  const parts = content.split(
-    /(\[LIST\][\s\S]*?\[\/LIST\]|\[TABLE\][\s\S]*?\[\/TABLE\]|\[IMAGE\s+.*?\])/g
-  );
+// const ContentParser = ({ content }: { content: string }) => {
+//   // Use [\s\S] to match everything including newlines, avoiding 's' flag issues
+//   // const parts = content.split(
+//   //   /(\[LIST\][\s\S]*?\[\/LIST\]|\[TABLE\][\s\S]*?\[\/TABLE\]|\[IMAGE\s+.*?\])/g
+//   // );
+//   const parts = content.split(
+//     /(\[LIST\][\s\S]*?\[\/LIST\]|\[TABLE\][\s\S]*?\[\/TABLE\]|\[IMAGE\s+.*?\])/g
+//   );
   
+
+//   return (
+//     <div className="space-y-4 font-sans text-slate-200">
+//       {parts.map((part, i) => {
+//         const cleanPart = part.trim();
+//         // 1. Handle Lists
+//         if (part.startsWith('[LIST]')) {
+//           const items = part
+//             .replace(/\[\/?LIST\]/g, '')
+//             .split('*')
+//             .filter((l) => l.trim());
+//           return (
+//             <ul key={i} className="space-y-2 my-4">
+//               {items.map((item, j) => (
+//                 <li
+//                   key={j}
+//                   className="text-xs font-mono flex items-start gap-2 text-indigo-300"
+//                 >
+//                   <span className="mt-1">
+//                     <Zap size={10} />
+//                   </span>
+//                   {item.trim()}
+//                 </li>
+//               ))}
+//             </ul>
+//           );
+//         }
+
+//         // 2. Handle Images (Strip HTML attributes to get the src)
+//         if (part.startsWith('[IMAGE')) {
+//           // Extract the src attribute using a non-greedy regex
+//           const srcMatch = part.match(/src=["'](.*?)["']/);
+//           const src = srcMatch ? srcMatch[1] : '';
+
+//           return (
+//             <img
+//               key={i}
+//               src={src}
+//               className=" h-50 object-contain rounded mx-auto my-4 border-2"
+//               alt="Founder"
+//             />
+//           );
+//         }
+
+//         // 3. Handle Tables
+        
+
+//         // 4. Handle Text
+//         return (
+//           <p key={i} className="text-xs leading-relaxed">
+//             {part.replace(/\{.*?\}/g, '').trim()}
+//           </p>
+//         );
+//       })}
+//     </div>
+//   );
+// };
+const ContentParser = ({ content }: { content: string }) => {
+  const parts = content.split(/(\[LIST\][\s\S]*?\[\/LIST\]|\[IMAGE\s+.*?\])/g);
 
   return (
     <div className="space-y-4 font-sans text-slate-200">
       {parts.map((part, i) => {
-        const cleanPart = part.trim();
+        if (!part.trim()) return null;
+
         // 1. Handle Lists
         if (part.startsWith('[LIST]')) {
+          // Use a Regex that splits by the bullet character AND captures the preceding text
+          // This handles both your current output and standard bullet points
           const items = part
             .replace(/\[\/?LIST\]/g, '')
-            .split('*')
-            .filter((l) => l.trim());
+            .split(/[•\-*]\s+/)
+            .filter((l) => l.trim().length > 0);
+
           return (
-            <ul key={i} className="space-y-2 my-4">
+            <ul key={i} className="space-y-3 my-4">
               {items.map((item, j) => (
                 <li
                   key={j}
-                  className="text-xs font-mono flex items-start gap-2 text-indigo-300"
+                  className="text-xs font-mono flex items-start gap-3 text-indigo-300"
                 >
-                  <span className="mt-1">
-                    <Zap size={10} />
+                  <span className="mt-0.5 shrink-0">
+                    <Zap size={10} className="text-indigo-500" />
                   </span>
-                  {item.trim()}
+                  <span className="leading-relaxed">{item.trim()}</span>
                 </li>
               ))}
             </ul>
           );
         }
 
-        // 2. Handle Images (Strip HTML attributes to get the src)
-        if (part.startsWith('[IMAGE')) {
-          // Extract the src attribute using a non-greedy regex
-          const srcMatch = part.match(/src=["'](.*?)["']/);
-          const src = srcMatch ? srcMatch[1] : '';
-
-          return (
-            <img
-              key={i}
-              src={src}
-              className=" h-50 object-contain rounded mx-auto my-4 border-2"
-              alt="Founder"
-            />
-          );
-        }
-
-        // 3. Handle Tables
-        
+        // ... (Image handling)
 
         // 4. Handle Text
         return (
