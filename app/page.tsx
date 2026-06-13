@@ -121,10 +121,28 @@ export default function VpnSupportDashboard() {
   const [isLoading, setIsLoading] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [isDark, setIsDark] = useState(true);
+  // 1. Add this constant
+  const MAX_CHARS = 2000;
+
+  // 2. Ref for auto-resizing
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
   const [currentConversationId, setCurrentConversationId] = useState<
     string | null
   >(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value;
+    if (value.length <= MAX_CHARS) {
+      setInput(value);
+
+      // Auto-resize logic
+      if (textareaRef.current) {
+        textareaRef.current.style.height = 'auto';
+        textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+      }
+    }
+  };
 
   // 2. Optimized Handler
   const handleCopy = async (id: string, content: string) => {
@@ -559,7 +577,7 @@ export default function VpnSupportDashboard() {
             : 'bg-white border-slate-200'
         }`}
       >
-        <form
+        {/* <form
           onSubmit={handleSubmit}
           className={`max-w-3xl mx-auto flex items-center gap-2 border rounded-xl p-2 transition-all duration-300 focus-within:ring-2 focus-within:ring-blue-500/40 focus-within:scale-[1.01] ${
             isDark
@@ -567,17 +585,7 @@ export default function VpnSupportDashboard() {
               : 'bg-slate-100 border-slate-200 focus-within:border-blue-500 focus-within:bg-white shadow-sm'
           }`}
         >
-          {/* <input
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="Type your connection telemetry query..."
-            className={`flex-1 bg-transparent border-0 outline-none text-xs px-3 font-medium disabled:cursor-not-allowed ${
-              isDark
-                ? 'text-slate-100 placeholder-slate-500'
-                : 'text-slate-800 placeholder-slate-400'
-            }`}
-            disabled={isLoading}
-          /> */}
+          
           <textarea // 1. Use textarea instead of input
             value={input}
             onChange={(e) => setInput(e.target.value)}
@@ -603,8 +611,44 @@ export default function VpnSupportDashboard() {
           >
             <Send size={13} />
           </motion.button>
+        </form> */}
+        <form
+          onSubmit={handleSubmit}
+          className={`max-w-3xl mx-auto flex items-end gap-2 border rounded-xl p-2 transition-all duration-300 ${
+            isDark
+              ? 'bg-slate-900/60 border-slate-800'
+              : 'bg-slate-100 border-slate-200'
+          }`}
+        >
+          <textarea
+            ref={textareaRef}
+            value={input}
+            onChange={handleInput}
+            maxLength={MAX_CHARS}
+            placeholder={`Type query (max ${MAX_CHARS} chars)...`}
+            className="flex-1 bg-transparent border-0 outline-none text-xs px-3 py-2 max-h-32 min-h-[40px] resize-none"
+            rows={1}
+            disabled={isLoading}
+          />
+          <div className="flex flex-col items-end gap-1">
+            <motion.button
+              type="submit"
+              disabled={isLoading || !input.trim()}
+              className="p-2.5 bg-blue-600 text-white rounded-lg disabled:opacity-50"
+            >
+              <Send size={13} />
+            </motion.button>
+            <span
+              className={`text-[8px] ${
+                input.length > MAX_CHARS - 100
+                  ? 'text-red-500'
+                  : 'text-slate-500'
+              }`}
+            >
+              {input.length}/{MAX_CHARS}
+            </span>
+          </div>
         </form>
-
         <div
           className={`flex items-center justify-center gap-1.5 text-[9px] mt-4 tracking-widest font-black uppercase transition-colors ${
             isDark ? 'text-slate-600' : 'text-slate-400'
