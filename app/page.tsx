@@ -196,9 +196,9 @@ export default function VpnSupportDashboard() {
     const nextState = !isDark;
     setIsDark(nextState);
     localStorage.setItem('Delta_explicit_theme', nextState ? 'dark' : 'light');
-    toast.info(`Switched to ${nextState ? 'Dark' : 'Light'} Mode`, {
-      duration: 1500,
-    });
+    // toast.info(`Switched to ${nextState ? 'Dark' : 'Light'} Mode`, {
+    //   duration: 1500,
+    // });
   };
   if (!isLoaded) {
     return (
@@ -350,19 +350,17 @@ export default function VpnSupportDashboard() {
             </p>
           </div>
         </div> */}
-        <div className="flex items-center gap-3">
+        <motion.div
+          whileHover={{ scale: 1.15, rotate: 360 }}
+          className="flex items-center gap-3"
+        >
           {/* IMAGE LOGO IN NAVBAR */}
           <img
             src={`${isDark ? `/logob.png` : `/logo_ll.png`}`}
             alt="Delta Logo"
             className="w-28  rounded-lg object-contain"
           />
-
-          {/* <div>
-            <h1 className="...">DeltaVPN Core</h1>
-            <p className="...">Gloc Managed Node</p>
-          </div> */}
-        </div>
+        </motion.div>
 
         {/* Action Panel Utilities */}
         <div className="flex items-center gap-3">
