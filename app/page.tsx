@@ -17,6 +17,7 @@ import {
   Zap,Copy,Edit2,
   Image as ImageIcon,
 } from 'lucide-react';
+import Image from "next/image";
 
 interface ChatMessage {
   id: string;
@@ -125,6 +126,7 @@ const ContentParser = ({ content }: { content: string }) => {
             </ul>
           );
         }
+        
 
         // ... (Image handling)
 

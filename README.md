@@ -1,34 +1,35 @@
 # Delta VPN AI Support Terminal
 
-An enterprise-ready, high-concurrency diagnostic dashboard engineered for Delta VPN. This terminal leverages Groq’s ultra-low-latency Llama 3.1 8B inference to provide real-time network telemetry and intelligent infrastructure insights.
+An enterprise-ready, high-concurrency diagnostic dashboard engineered for Delta VPN. This terminal leverages Groq’s ultra-low-latency Llama 3.1 8B inference and Jina AI semantic retrieval to provide real-time network telemetry and intelligent infrastructure insights.
 
 ## Tech Stack
 * **Framework:** Next.js (App Router)
 * **AI Core Runtime:** Groq API (Llama 3.1 8B Instant)
+* **Embedding/RAG Engine:** Jina AI (v2 Base)
 * **Styling:** Tailwind CSS + Lucide Icons
 * **Animation:** Framer Motion
 
 ## Architectural Overview
-
-
-The application utilizes a streaming-first architecture to minimize perceived latency. The system prompt is engineered to enforce a "Senior Technical Advisor" persona, ensuring the agent maintains professional boundaries and pivots off-topic queries to core VPN infrastructure.
+The application utilizes a streaming-first, RAG-enabled architecture. By performing semantic search against a proprietary knowledge base before inference, the system enforces a "Senior Technical Advisor" persona, ensuring the agent maintains professional boundaries and pivots off-topic queries to core VPN/IAM infrastructure.
 
 ## Engineering Write-up
 ### Design Decisions
-* **Factory Pattern:** Client initialization is deferred to runtime to prevent build-time failures in static site generation.
-* **Persona-Driven Inference:** System-level instructions are used to control the agent's depth and tone, ensuring consistency across troubleshooting sessions.
+* **Semantic Grounding (RAG):** Replaced static instructions with vector-based retrieval, enabling precise, context-aware troubleshooting based on semantic intent.
+* **Concurrency Management:** Implemented an asynchronous sequential embedding pipeline to respect Jina AI’s rate limits, ensuring high stability.
+* **Persona-Driven Inference:** System-level instructions are dynamically injected with context-grounded chunks, maintaining a consistent technical depth and tone.
 
 ### Trade-offs
-* **Context Handling:** History is managed via a sliding-window array (`slice(-10)`) to maintain conversational state within memory constraints.
-* **Storage:** Current session state uses `localStorage`. This allows for rapid iteration but will be replaced by a persistent database (e.g., Supabase/PostgreSQL) for production audits.
+* **Latency vs. Accuracy:** The RAG lookup adds marginal overhead to the inference chain, but significantly eliminates hallucinations and improves infrastructure-specific accuracy.
+* **Storage:** Currently utilizes an in-memory `vectorDB` array for rapid iteration; this will be migrated to a persistent vector store (e.g., Supabase/pgvector) for production-grade scaling.
 
 ### Future Improvements
-* **RAG Integration:** Implement vector-based document retrieval for technical troubleshooting.
-* **Observability:** Integration of tracing (LangSmith) to monitor cost and response quality.
+* **Persistent Vector DB:** Migrate from local knowledge base array to an external vector database for dynamic content updates.
+* **Observability:** Integration of tracing (LangSmith) to monitor cost, latency, and response quality.
+* **History Summarizer:** Implement a sliding-window context compressor to optimize token usage for long-running diagnostic sessions.
 
 ## Setup & Local Run
 1. `pnpm install`
-2. Create `.env` from `.env.example`
+2. Configure `.env.local`: `GROQ_API_KEY`, `JINA_API_KEY`
 3. `pnpm run dev`
 
 ## Live Deployment
