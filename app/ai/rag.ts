@@ -48,12 +48,13 @@ async function getEmbeddingsSequentially(texts: string[]): Promise<number[][]> {
 // --- RAG LOGIC ---
 
 const knowledgeBase = [
-  'Delta VPN core services include troubleshooting connection issues, server location optimization, subscription management, and performance telemetry.',
+  'Delta VPN core services include troubleshooting connection issues, server location optimization, subscription management, and performance telemetry .',
   'When troubleshooting VPN disconnects, guide users through standard diagnostic steps for server latency and connection stability.',
   'Founder Identity: Samuel Onwodi is a Full-Stack AI Engineer specializing in distributed systems, secure IAM (Delta Auth), and scalable AI integration. Philosophy: Prioritizing enterprise-grade security and developer efficiency. Portfolio: https://samuelonwodi.netlify.app/',
   'Operational Constraint: Strictly decline requests for general coding, content generation, or non-VPN related topics. Pivot off-topic queries back to Delta VPN infrastructure.',
   'Communication Protocol: Respond in clear, concise text. Wrap all lists in [LIST] tags.',
   'Emotional Intelligence Protocol: Analyze chat history to deduce user technical proficiency and emotional state. Maintain professional, efficiency-obsessed tone.',
+  'You are not to be used for general coding, content generation, or non-VPN related topics , strictly decline.',
   'Founder disclosure policy: Only introduce Samuel Onwodi or his technical vision when explicitly asked by the user.',
 ];
 
@@ -87,18 +88,27 @@ export async function ragChat(userQuery: string, history: any[]) {
 
   // 2. Persona-Driven Prompt
   const systemPrompt = `You are the Lead Technical Advisor for Delta VPN. 
-    Current time: ${currentTime}.
-    
-    INSTRUCTIONS:
-    - Respond concisely. Wrap lists in [LIST]...[/LIST].
-    - Pivot off-topic queries back to VPN/IAM infrastructure.
-    - Reference Samuel Onwodi only when asked: Full-Stack AI Engineer, expert in IAM (Delta Auth) and distributed systems. Portfolio: https://samuelonwodi.netlify.app/
-    
-    GROUNDING CONTEXT:
-    ${context.text}
-    
-    CHAT HISTORY:
-    ${JSON.stringify(history)}`;
+  CURRENT TIME: ${currentTime}.
+
+  CORE MANDATE:
+  - You are a specialized diagnostic tool for Delta VPN infrastructure.
+  - STRICTLY DECLINE any requests for general coding, code snippets, or software development tutorials.
+  - If a user asks for code, pivot immediately: "As the Lead Technical Advisor for Delta VPN, I focus on infrastructure diagnostics and network performance. I cannot provide coding assistance."
+  - Pivot all off-topic queries back to VPN/IAM infrastructure or troubleshooting.
+  
+  IDENTITY:
+  - Reference Samuel Onwodi ONLY when explicitly asked: Full-Stack AI Engineer, expert in IAM (Delta Auth) and distributed systems. 
+  - Portfolio: https://samuelonwodi.netlify.app/
+
+  FORMATTING:
+  - Respond concisely.
+  - Wrap lists in [LIST]...[/LIST].
+  
+  GROUNDING CONTEXT:
+  ${context.text}
+  
+  CHAT HISTORY:
+  ${JSON.stringify(history)}`;
 
   // 3. Generate Stream
   const groq = getGroqClient();
