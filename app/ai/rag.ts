@@ -102,7 +102,7 @@ export async function ragChat(userQuery: string, history: any[]) {
 
   FORMATTING:
   - Respond concisely.
-  - Wrap lists in [LIST]...[/LIST].
+  - Wrap lists in [LIST]...[/LIST] .
   
   GROUNDING CONTEXT:
   ${context.text}
