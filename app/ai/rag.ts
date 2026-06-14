@@ -96,7 +96,7 @@ class LocalVectorStore {
     if (!response.ok)
       throw new Error('Failed to bootstrap vector knowledge base');
     const json = await response.json();
-    console.info('VectorStore bootstrapped with knowledge base:', knowledge.length, 'entries');
+    // console.info('VectorStore bootstrapped with knowledge base:', knowledge.length, 'entries');
 
     this.registry = knowledge.map((text, i) => ({
       text,
@@ -149,6 +149,7 @@ export async function ragChat(userQuery: string, history: ChatMessage[]) {
   try {
     const queryVector = await getEmbedding(userQuery);
     contextText = store.findBestMatch(queryVector);
+    // console.log('Retrieved context for query:', contextText);
   } catch (error) {
     console.error(
       'RAG Retrieval failed, falling back to empty context:',
